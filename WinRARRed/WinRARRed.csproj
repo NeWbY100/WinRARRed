@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ReScene.Lib\ReScene.Lib\ReScene.Lib.csproj" />
+    <ProjectReference Include="..\ReScene.Lib\ReScene\ReScene.csproj" />
   </ItemGroup>
 
 </Project>

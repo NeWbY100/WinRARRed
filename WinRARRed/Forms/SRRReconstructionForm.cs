@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
-using SRRLib;
+using ReScene.SRR;
 using ReScene.Core;
 using ReScene.Core.Cryptography;
 using ReScene.Core.IO;

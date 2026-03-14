@@ -4,8 +4,8 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using RARLib;
-using SRRLib;
+using ReScene.RAR;
+using ReScene.SRR;
 using WinRARRed.Controls;
 using ReScene.Core.Comparison;
 

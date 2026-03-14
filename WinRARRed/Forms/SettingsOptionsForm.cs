@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Windows.Forms;
-using RARLib;
-using SRRLib;
+using ReScene.RAR;
+using ReScene.SRR;
 using ReScene.Core;
 using ReScene.Core.Diagnostics;
 

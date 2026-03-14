@@ -85,7 +85,7 @@ public partial class MainForm : Form
         OptionsForm.ShowDialog(this);
 
         // If a custom packer SRR was imported, open the reconstruction form
-        if (OptionsForm.RAROptions.CustomPackerDetected != SRRLib.CustomPackerType.None
+        if (OptionsForm.RAROptions.CustomPackerDetected != ReScene.SRR.CustomPackerType.None
             && !string.IsNullOrEmpty(OptionsForm.RAROptions.SrrFilePath))
         {
             using var form = new SRRReconstructionForm(
