@@ -226,7 +226,7 @@ partial class FileInspectorForm
 
         // FileInspectorForm
         AllowDrop = true;
-        AutoScaleDimensions = new SizeF(7F, 15F);
+        AutoScaleDimensions = new SizeF(96F, 96F);
         AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(1000, 650);
         Controls.Add(splitContainerMain);

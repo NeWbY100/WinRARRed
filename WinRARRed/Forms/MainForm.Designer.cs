@@ -120,7 +120,7 @@ partial class MainForm
         tsmiToolsFileInspector.ShortcutKeys = System.Windows.Forms.Keys.F12;
         tsmiToolsFileInspector.Size = new System.Drawing.Size(195, 22);
         tsmiToolsFileInspector.Text = "File &Inspector...";
-        tsmiToolsFileInspector.Click += tsmiToolsFileInspector_Click;
+        tsmiToolsFileInspector.Click += TsmiToolsFileInspector_Click;
         //
         // tsmiToolsFileCompare
         //
@@ -128,7 +128,7 @@ partial class MainForm
         tsmiToolsFileCompare.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D;
         tsmiToolsFileCompare.Size = new System.Drawing.Size(195, 22);
         tsmiToolsFileCompare.Text = "File &Compare...";
-        tsmiToolsFileCompare.Click += tsmiToolsFileCompare_Click;
+        tsmiToolsFileCompare.Click += TsmiToolsFileCompare_Click;
         //
         // tsmiSettings
         //

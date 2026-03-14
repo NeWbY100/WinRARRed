@@ -380,7 +380,7 @@ public partial class SettingsOptionsForm : Form
         DialogResult = DialogResult.OK;
     }
 
-    private void BtnCancel_Click(object? sender, System.EventArgs e)
+    private void BtnCancel_Click(object? sender, EventArgs e)
     {
         DialogResult = DialogResult.Cancel;
     }

@@ -5,12 +5,12 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Windows.Forms;
 using ReScene.Core;
 using ReScene.Core.Cryptography;
 using ReScene.Core.Diagnostics;
 using ReScene.Core.IO;
+using ReScene.SRR;
 
 namespace WinRARRed.Forms;
 
@@ -28,7 +28,7 @@ public partial class MainForm : Form
 
     private readonly SettingsOptionsForm OptionsForm;
 
-    private System.Windows.Forms.Timer? elapsedTimer;
+    private Timer? elapsedTimer;
     private DateTime bruteForceStartTime;
 
     private BruteForceProgressForm? progressForm;
@@ -36,7 +36,7 @@ public partial class MainForm : Form
     // Buffered logging
     private record LogEntry(string Text, LogTarget Target, DateTime Timestamp, Color Color);
     private readonly ConcurrentQueue<LogEntry> logBuffer = new();
-    private System.Windows.Forms.Timer? logFlushTimer;
+    private Timer? logFlushTimer;
     private const int LogFlushIntervalMs = 50;
     private const int MaxEntriesPerFlush = 100;
 
@@ -57,7 +57,7 @@ public partial class MainForm : Form
         WinRARRed.Log.Logged += Log_Logged;
 
         // Initialize buffered log flush timer
-        logFlushTimer = new System.Windows.Forms.Timer { Interval = LogFlushIntervalMs };
+        logFlushTimer = new Timer { Interval = LogFlushIntervalMs };
         logFlushTimer.Tick += (s, e) => FlushLogBuffer();
         logFlushTimer.Start();
 
@@ -85,7 +85,7 @@ public partial class MainForm : Form
         OptionsForm.ShowDialog(this);
 
         // If a custom packer SRR was imported, open the reconstruction form
-        if (OptionsForm.RAROptions.CustomPackerDetected != ReScene.SRR.CustomPackerType.None
+        if (OptionsForm.RAROptions.CustomPackerDetected != CustomPackerType.None
             && !string.IsNullOrEmpty(OptionsForm.RAROptions.SrrFilePath))
         {
             using var form = new SRRReconstructionForm(
@@ -97,13 +97,13 @@ public partial class MainForm : Form
         }
     }
 
-    private void tsmiToolsFileInspector_Click(object? sender, EventArgs e)
+    private void TsmiToolsFileInspector_Click(object? sender, EventArgs e)
     {
         var form = new FileInspectorForm();
         form.Show(this);
     }
 
-    private void tsmiToolsFileCompare_Click(object? sender, EventArgs e)
+    private void TsmiToolsFileCompare_Click(object? sender, EventArgs e)
     {
         var form = new FileCompareForm();
         form.Show(this);
@@ -683,7 +683,7 @@ public partial class MainForm : Form
         rtbLog.Invalidate();
     }
 
-    private void AppendColoredLog(RichTextBox rtbLog, string dateTime, string[] lines, Color logColor)
+    private static void AppendColoredLog(RichTextBox rtbLog, string dateTime, string[] lines, Color logColor)
     {
         for (int i = 0; i < lines.Length; i++)
         {
@@ -736,7 +736,7 @@ public partial class MainForm : Form
     {
         bruteForceStartTime = DateTime.Now;
         elapsedTimer?.Dispose();
-        elapsedTimer = new System.Windows.Forms.Timer { Interval = 1000 };
+        elapsedTimer = new Timer { Interval = 1000 };
         elapsedTimer.Tick += (s, e) =>
         {
             var elapsed = DateTime.Now - bruteForceStartTime;

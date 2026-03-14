@@ -53,7 +53,7 @@ public class HexViewControl : UserControl
     private int _selectionAnchor = -1;
     private bool _isDragging;
     private int _caretIndex = -1;
-    private System.Windows.Forms.Timer? _autoScrollTimer;
+    private Timer? _autoScrollTimer;
     private int _autoScrollDirection;
     private ContextMenuStrip? _contextMenu;
 
@@ -567,7 +567,7 @@ public class HexViewControl : UserControl
     {
         if (_autoScrollTimer != null) return;
 
-        _autoScrollTimer = new System.Windows.Forms.Timer { Interval = 50 };
+        _autoScrollTimer = new Timer { Interval = 50 };
         _autoScrollTimer.Tick += OnAutoScrollTick;
         _autoScrollTimer.Start();
     }

@@ -495,7 +495,7 @@ public partial class FileCompareForm : Form
         }
     }
 
-    private void PopulateDetailedTree(TreeView tree, List<RARDetailedBlock> blocks, bool isLeft)
+    private static void PopulateDetailedTree(TreeView tree, List<RARDetailedBlock> blocks, bool isLeft)
     {
         bool isRAR5 = blocks.Count > 0 && blocks[0].BlockType == "Signature" &&
                       blocks[0].Fields.Count > 0 && blocks[0].Fields[0].Value.StartsWith("52 61 72 21 1A 07 01");
@@ -533,7 +533,7 @@ public partial class FileCompareForm : Form
         rootNode.Expand();
     }
 
-    private void PopulateSRRTree(TreeView tree, SRRFileData srrData, bool isLeft)
+    private static void PopulateSRRTree(TreeView tree, SRRFileData srrData, bool isLeft)
     {
         var srr = srrData.SrrFile;
 
@@ -612,7 +612,7 @@ public partial class FileCompareForm : Form
         rootNode.Expand();
     }
 
-    private void PopulateRARTree(TreeView tree, RARFileData rar, bool isLeft)
+    private static void PopulateRARTree(TreeView tree, RARFileData rar, bool isLeft)
     {
         int fileCount = rar.IsRAR5 ? rar.RAR5FileInfos.Count : rar.FileHeaders.Count;
         // Estimate block count: signature + archive header + files + end archive + possibly CMT
@@ -781,7 +781,7 @@ public partial class FileCompareForm : Form
         return text;
     }
 
-    private void SyncTreeSelection(TreeView source, TreeView target, TreeNode selectedNode)
+    private static void SyncTreeSelection(TreeView source, TreeView target, TreeNode selectedNode)
     {
         if (selectedNode.Tag is not CompareNodeData sourceData)
             return;
