@@ -102,48 +102,50 @@ Use `Options -> Import SRR` to apply metadata from an `.srr`:
 
 ```
 WinRARRed/
-├── RARLib/                     # RAR format library (no UI dependencies)
-│   ├── Decompression/          # Native LZSS + PPMd decompressors
-│   │   └── PPMd/               # PPMd model, range coder, allocator
-│   ├── RARHeaderReader.cs      # RAR 4.x header parsing
-│   ├── RAR5HeaderReader.cs     # RAR 5.x header parsing
-│   ├── RARDetailedHeader.cs    # Detailed per-field parsing with byte offsets
-│   ├── RARPatcher.cs           # Post-creation header patching (Host OS, attrs, LARGE, CRC)
-│   ├── RARFileHeader.cs        # Parsed header data structures
-│   ├── RARFlags.cs             # Flag enums (archive, file, end-archive, timestamp precision)
-│   └── RARUtils.cs             # CRC, date conversion, filename decoding
+├── ReScene.Lib/                    # Git submodule (github.com/NeWbY100/ReScene.Lib)
+│   ├── ReScene.Lib/                # Core library
+│   │   ├── RAR/                    # RAR 4.x/5.x header parsing, patching, decompression
+│   │   │   └── Decompression/      # Native LZSS, PPMd, Unpack20/29/50
+│   │   ├── SRR/                    # SRR/SRS file parsing and creation
+│   │   └── Core/                   # Brute-force orchestration, options, diagnostics, I/O
+│   │       ├── Comparison/         # RAR/SRR file comparison
+│   │       ├── Cryptography/       # CRC32, SHA1 hashing
+│   │       ├── Diagnostics/        # CliWrap wrapper for rar.exe
+│   │       └── IO/                 # SFV, SHA1 file parsing
+│   └── ReScene.Lib.Tests/          # xUnit tests (784 tests, 20 test classes)
 │
-├── SRRLib/                     # SRR format library (depends on RARLib)
-│   ├── SRRFile.cs              # Main parser — extracts RAR headers, comments, timestamps, CRCs
-│   └── SRRBlock.cs             # Block type definitions and data classes
-│
-├── WinRARRed/                  # Main GUI application
-│   ├── Forms/                  # Windows Forms
-│   │   ├── MainForm.cs         # Main window, file selection, log display
+├── WinRARRed/                      # GUI application
+│   ├── Forms/                      # Windows Forms
+│   │   ├── MainForm.cs             # Main window, file selection, log display
 │   │   ├── SettingsOptionsForm.cs  # Brute-force options, SRR import, version selection
 │   │   ├── FileInspectorForm.cs    # RAR/SRR binary inspector with hex view
-│   │   └── FileCompareForm.cs      # Side-by-side file comparison
-│   ├── Controls/               # Custom controls
-│   │   ├── HexViewControl.cs   # Virtualized hex viewer with field highlighting
+│   │   ├── FileCompareForm.cs      # Side-by-side file comparison
+│   │   ├── BruteForceProgressForm.cs   # Brute-force progress display
+│   │   ├── SRRReconstructionForm.cs    # SRR reconstruction dialog
+│   │   ├── ModifiedDateWarningForm.cs  # Modified file warning
+│   │   └── RARChecksumNotFoundForm.cs  # Missing checksum warning
+│   ├── Controls/                   # Custom controls
+│   │   ├── HexViewControl.cs       # Virtualized hex viewer with field highlighting
 │   │   └── OperationProgressStatusUserControl.cs  # Progress bar with time estimates
-│   ├── Diagnostics/            # Process management
-│   │   ├── RARProcess.cs       # CliWrap wrapper for rar.exe
-│   │   ├── RARArchiveVersion.cs    # RAR4/RAR5/RAR7 flags enum
-│   │   └── RARCommandLineArgument.cs  # Version-constrained switch
-│   ├── IO/                     # File I/O (SFV, SHA1 parsing, extraction)
-│   ├── Cryptography/           # CRC32, SHA1 hashing
-│   ├── Manager.cs              # Core brute-force orchestration (two-phase, patching)
-│   ├── RAROptions.cs           # Configuration options (patching, naming, attributes)
-│   ├── BruteForceOptions.cs    # Per-run options (paths, hashes)
-│   └── docs/                   # Technical documentation
+│   ├── IO/                         # RAR extraction via SharpCompress
+│   ├── GUIHelper.cs                # Dialog and focus utilities
+│   ├── Log.cs                      # Serilog logging with UI event integration
+│   ├── Program.cs                  # Application entry point
+│   └── docs/                       # Technical documentation
 │
-├── RARLib.Tests/               # xUnit tests for RARLib (176 tests)
-└── SRRLib.Tests/               # xUnit tests for SRRLib (49 tests)
+├── doc/                            # Screenshots
+└── WinRARRed.sln
 ```
 
 ## Build
 
 ```bash
+# Clone with submodule
+git clone --recurse-submodules https://github.com/NeWbY100/WinRARRed.git
+
+# Or initialize submodule after cloning
+git submodule update --init
+
 # Build
 dotnet build WinRARRed/WinRARRed.csproj
 
@@ -154,18 +156,28 @@ dotnet run --project WinRARRed/WinRARRed.csproj
 dotnet publish WinRARRed/WinRARRed.csproj -c Release
 
 # Run tests
-dotnet test RARLib.Tests/RARLib.Tests.csproj
-dotnet test SRRLib.Tests/SRRLib.Tests.csproj
+dotnet test ReScene.Lib/ReScene.Lib.Tests/ReScene.Lib.Tests.csproj
 ```
 
 ## Dependencies
+
+**WinRARRed (GUI)**
+
+| Package | Version | Purpose |
+|---------|---------|---------|
+| SharpCompress | 0.33.0 | RAR extraction |
+| Serilog | 4.2.0 | Structured logging |
+| Serilog.Sinks.File | 6.0.0 | Log file output |
+| Serilog.Sinks.Console | 6.0.0 | Console log output |
+| Serilog.Sinks.Debug | 3.0.0 | Debug log output |
+
+**ReScene.Lib (submodule)**
 
 | Package | Version | Purpose |
 |---------|---------|---------|
 | Crc32.NET | 1.2.0 | CRC32 calculation |
 | CliWrap | 3.10.0 | Process execution wrapper |
-| SharpCompress | 0.33.0 | RAR extraction (backup) |
-| Serilog | 4.2.0 | Structured logging |
+| System.IO.Hashing | 9.0.4 | Non-cryptographic hashing |
 
 ## License
 
