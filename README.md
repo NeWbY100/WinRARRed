@@ -1,5 +1,7 @@
 # WinRARRed
 
+> **This project has been superseded by [ReScene.NET](https://github.com/NeWbY100/ReScene.NET)**, which combines WinRARRed's brute-force functionality with a broader set of scene release reconstruction tools in a single application. This repository is no longer actively maintained.
+
 WinRARRed is a Windows utility that brute-forces WinRAR command line settings to recreate a bit-perfect RAR archive from its extracted files. It is aimed at preservation workflows where the original archive is missing but the payload files (and a verification hash) are intact. It uses [SRR (Scene Release Reconstruction)](http://rescene.wikidot.com/start) files to prefill archive settings and verify results.
 
 ![main_window](doc/main_window.png)
